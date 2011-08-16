@@ -15,7 +15,9 @@ module ::ActionController
 
   class Base
     class << self
-      alias :old_relative_url_root :relative_url_root
+      if defined?(relative_url_root)
+        alias :old_relative_url_root :relative_url_root
+      end
       def relative_url_root
         Facebooker.path_prefix
       end
@@ -41,19 +43,19 @@ module ::ActionController
     def can_safely_access_request_parameters?
       @request.request_parameters
     end
-  
+
     def rewrite_url_with_facebooker(*args)
       options = args.first.is_a?(Hash) ? args.first : args.last
       is_link_to_canvas = link_to_canvas?(options)
       if is_link_to_canvas && !options.has_key?(:host)
         options[:host] = Facebooker.canvas_server_base
-      end 
+      end
       options.delete(:canvas)
       Facebooker.request_for_canvas(is_link_to_canvas) do
         rewrite_url_without_facebooker(*args)
       end
     end
-    
+
     alias_method_chain :rewrite_url, :facebooker
 
   end

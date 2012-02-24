@@ -588,7 +588,8 @@ module Facebooker
       class PublisherController
         include Facebooker::Rails::Publisher.master_helper_module
         include ActionController::UrlWriter
-        
+        default_url_options[:host] = HOST
+
         def initialize(source)
           self.class.url_option_source = source
         end

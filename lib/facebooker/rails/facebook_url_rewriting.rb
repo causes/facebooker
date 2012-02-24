@@ -55,8 +55,5 @@ module ::ActionController
         rewrite_url_without_facebooker(*args)
       end
     end
-
-    alias_method_chain :rewrite_url, :facebooker
-
   end
 end
